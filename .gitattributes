@@ -1,2 +1,2 @@
-*.zsh linguist-language=Markdown
-.zshrc linguist-language=Markdown
+*.zsh linguist-language=YAML
+.zshrc linguist-language=YAML
