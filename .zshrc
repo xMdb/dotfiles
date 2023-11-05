@@ -12,8 +12,31 @@ up() {
   docker-compose -f ~/dockersetups/$1/docker-compose.yml up -d
 }
 
+down() {
+  docker-compose -f ~/dockersetups/$1/docker-compose.yml down
+}
+
 drips() {
   docker ps -q | xargs -n 1 docker inspect --format '{{ .NetworkSettings.IPAddress }} {{ .Name }}' | sed 's/ \// /'
+}
+
+mdd() {
+  sudo mkdir -p /opt/docker/data/$1
+}
+
+msd() {
+  mkdir -p ~/dockersetups/$1
+}
+
+listports() {
+  sudo netstat -ntlp | grep LISTEN
+}
+
+updatedockerimage() {
+  docker pull $(grep 'image' ~/dockersetups/$1/docker_compose.yml | awk '{print $2}')
+  docker stop $(grep 'container_name' ~/dockersetups/$1/docker_compose.yml | awk '{print $2}')
+  docker rm $(grep 'container_name' ~/dockersetups/$1/docker_compose.yml | awk '{print $2}')
+  up $1
 }
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
